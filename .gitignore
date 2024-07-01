@@ -1,0 +1,14 @@
+### macOS ###
+# General
+.DS_Store
+.AppleDouble
+.LSOverride
+
+### Tuist derived files ###
+graph.dot
+**/Derived/
+
+project/Tuist/.build
+### Tuist managed dependencies ###
+**/*.xcworkspace
+**/*.xcodeproj
