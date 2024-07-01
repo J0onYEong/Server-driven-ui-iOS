@@ -51,6 +51,9 @@ let project = Project(
             dependencies: [
                 .target(name: "Domain"),
                 .target(name: "Data"),
+                .external(name: "RxSwift"),
+                .external(name: "RxCocoa"),
+                .external(name: "RxRelay"),
             ]
         ),
         
@@ -76,6 +79,7 @@ let project = Project(
             sources: ["Project/Data/**"],
             dependencies: [
                 .target(name: "Domain"),
+                .external(name: "Alamofire"),
             ]
         ),
         

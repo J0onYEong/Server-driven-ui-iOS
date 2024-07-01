@@ -12,3 +12,4 @@ project/Tuist/.build
 ### Tuist managed dependencies ###
 **/*.xcworkspace
 **/*.xcodeproj
+**/Package.resolved
