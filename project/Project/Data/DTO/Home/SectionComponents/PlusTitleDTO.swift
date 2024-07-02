@@ -39,7 +39,7 @@ struct PlusTitleDTO: Decodable {
     }
 }
 
-extension PlusTitleDTO: EntitiyRepresentable {
+extension PlusTitleDTO: EntityRepresentable {
     
     func toEntity() -> SectionComponentVO {
         

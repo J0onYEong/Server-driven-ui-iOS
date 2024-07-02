@@ -32,7 +32,7 @@ struct ScreenDTO: Decodable {
     }
 }
 
-extension ScreenDTO: EntitiyRepresentable {
+extension ScreenDTO: EntityRepresentable {
     
     func toEntity() -> ScreenVO {
         
