@@ -11,7 +11,11 @@ import RxSwift
 
 public class DefaultScreenUIRepository: ScreenUIRepository {
     
-    private let dataSoruce = DefaultNetworkDataSource()
+    private let dataSoruce: DefaultNetworkDataSource
+    
+    public init(dataSoruce: DefaultNetworkDataSource = DefaultNetworkDataSource()) {
+        self.dataSoruce = dataSoruce
+    }
     
     public func getHomeScreenUI() -> Single<ScreenVO> {
         
