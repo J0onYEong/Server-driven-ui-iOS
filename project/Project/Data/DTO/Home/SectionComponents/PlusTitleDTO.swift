@@ -6,43 +6,76 @@
 //
 
 import Foundation
+import Domain
 
-extension HomeContentDTO {
+// MARK: Plus title
+struct PlusTitleDTO: Decodable {
     
-    // MARK: Plus title
-    struct PlusTitleDTO: SectionComponentDTO {
+    let type: String?
+    let firstRowImage: RowImage?
+    let titleText: TitleText?
+    var badges: [BadgeDTO] = []
+    let description: String?
+    
+    public struct RowImage: Decodable {
         
-        let type: String?
-        let firstRowImage: RowImage?
-        let titleText: TitleText?
-        let badges: [BadgeDTO]?
-        let description: String?
+        let imageUrl: String?
+        let width: String?
+        let height: String?
+    }
+    
+    public struct TitleText: Decodable {
         
-        public struct RowImage: Decodable {
+        let text: String?
+        let textSize: String?
+        let textColor: String?
+        let textStyle: String?
+    }
+    
+    public struct BadgeDTO: Decodable {
+        
+        let badgeImage: String?
+        let text: String?
+    }
+}
+
+extension PlusTitleDTO: EntitiyRepresentable {
+    
+    func toEntity() -> SectionComponentVO {
+        
+        let defaultImagePath = "defaultImage"
+        
+        let defaultImageWidth = 0.0
+        let defaultImageHeight = 0.0
+        
+        let defaultTextSize = 17.0
+        
+        let badges = badges.map({ dto in
             
-            let imageUrl: String?
-            let width: String?
-            let height: String?
-        }
+            return PlusTitleSectionVO.Badge(
+                badgeImageUrl: URL(string: dto.badgeImage ?? defaultImagePath)!,
+                text: dto.text ?? ""
+            )
+        })
         
-        public struct TitleText: Decodable {
-            
-            let text: String?
-            let textSize: String?
-            let textColor: String?
-            let textStyle: String?
-        }
+        let firstRowImage = PlusTitleSectionVO.RowImage(
+            imageUrl: URL(string: firstRowImage?.imageUrl ?? defaultImagePath)!,
+            width: CGFloat(Double(firstRowImage?.width ?? "") ?? defaultImageWidth),
+            height: CGFloat(Double(firstRowImage?.height ?? "") ?? defaultImageHeight)
+        )
         
-        public struct BadgeDTO: Decodable {
-            
-            let badgeImage: String?
-            let text: String?
-        }
+        let titleText = PlusTitleSectionVO.TitleText(
+            text: titleText?.text ?? "",
+            textSize: CGFloat(Double(titleText?.textSize ?? "") ?? defaultTextSize),
+            textColor: titleText?.textColor ?? "",
+            textStyle: PlusTitleSectionVO.TextStyle(rawValue: titleText?.textStyle ?? "") ?? .bold
+        )
         
-        typealias EntityType = String
-        func toEntity() -> EntityType {
-            
-            return ""
-        }
+        return PlusTitleSectionVO(
+            firstRowImageUrl: firstRowImage,
+            titleText: titleText,
+            badges: badges,
+            description: description ?? ""
+        )
     }
 }
