@@ -7,7 +7,7 @@
 
 import Foundation
 
-protocol EntitiyRepresentable {
+protocol EntityRepresentable {
     associatedtype EntityType
     func toEntity() -> EntityType
 }

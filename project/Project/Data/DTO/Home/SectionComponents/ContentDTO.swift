@@ -9,8 +9,8 @@ import Foundation
 
 enum ContentDTO: Decodable {
     
-    case title_section(dto: any EntitiyRepresentable)
-    case plus_title_section(dto: any EntitiyRepresentable)
+    case title_section(dto: any EntityRepresentable)
+    case plus_title_section(dto: any EntityRepresentable)
     
     private enum DecodingKeys: String, CodingKey {
         case contentType = "sectionComponentType"
@@ -26,7 +26,7 @@ enum ContentDTO: Decodable {
     
     private static func decodeComponent(type: String, container: KeyedDecodingContainer<DecodingKeys>) throws -> Self {
         
-        // MARK: ✅ Section이 추가되는 경우 수정해야 하는 부분입니다.
+        // MARK: ✅ SectionComponent가 추가되는 경우 수정해야 하는 부분입니다.
         switch type {
         case "TITLE":
             let decodedObject = try container.decode(TitleDTO.self, forKey: .section)
