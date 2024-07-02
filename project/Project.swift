@@ -65,7 +65,9 @@ let project = Project(
             bundleId: "\(baseBundleId).domain",
             deploymentTargets: deploymentTarget,
             sources: ["Project/Domain/**"],
-            dependencies: []
+            dependencies: [
+                .external(name: "RxSwift"),
+            ]
         ),
         
         
@@ -79,6 +81,7 @@ let project = Project(
             sources: ["Project/Data/**"],
             dependencies: [
                 .target(name: "Domain"),
+                .external(name: "RxSwift"),
                 .external(name: "Alamofire"),
             ]
         ),

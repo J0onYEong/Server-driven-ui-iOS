@@ -7,21 +7,21 @@
 
 import Foundation
 
-enum HomeContentDTO: ContentDTO {
+enum ContentDTO: Decodable {
     
-    case title_section(dto: any SectionComponentDTO)
-    case plus_title_section(dto: any SectionComponentDTO)
+    case title_section(dto: any EntitiyRepresentable)
+    case plus_title_section(dto: any EntitiyRepresentable)
     
-    private enum DecodingKeys: CodingKey {
-        case sectionComponentType
+    private enum DecodingKeys: String, CodingKey {
+        case contentType = "sectionComponentType"
         case section
     }
     
     init(from decoder: any Decoder) throws {
         
         let container = try decoder.container(keyedBy: DecodingKeys.self)
-        let componentTypeStr = try container.decode(String.self, forKey: .sectionComponentType)
-        self = try Self.decodeComponent(type: componentTypeStr, container: container)
+        let contentType = try container.decode(String.self, forKey: .contentType)
+        self = try Self.decodeComponent(type: contentType, container: container)
     }
     
     private static func decodeComponent(type: String, container: KeyedDecodingContainer<DecodingKeys>) throws -> Self {

@@ -8,28 +8,41 @@
 import Foundation
 import Domain
 
-extension HomeContentDTO {
+// MARK: Title
+struct TitleDTO: Decodable {
     
-    // MARK: Title
-    struct TitleDTO: SectionComponentDTO {
+    typealias RawValue = Self
+    
+    let type: String?
+    let title: String?
+    var badges: [BadgeDTO] = []
+    let description: String?
+    
+    public struct BadgeDTO: Decodable {
         
-        typealias RawValue = Self
+        let badgeImage: String?
+        let text: String?
+    }
+}
+
+extension TitleDTO: EntitiyRepresentable {
+    
+    func toEntity() -> SectionComponentVO {
         
-        let type: String?
-        let title: String?
-        let badges: [BadgeDTO]?
-        let description: String?
+        let defaultImagePath = "defaultImage"
         
-        public struct BadgeDTO: Decodable {
+        let badges = badges.map({ dto in
             
-            let badgeImage: String?
-            let text: String?
-        }
+            return TitleSectionVO.Badge(
+                badgeImageUrl: URL(string: dto.badgeImage ?? defaultImagePath)!,
+                text: dto.text ?? ""
+            )
+        })
         
-        typealias EntityType = String
-        func toEntity() -> EntityType {
-            
-            return ""
-        }
+        return TitleSectionVO(
+            titleText: title ?? "unknown",
+            badges: badges,
+            description: description ?? ""
+        )
     }
 }
