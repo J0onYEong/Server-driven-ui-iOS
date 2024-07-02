@@ -9,9 +9,11 @@ import Foundation
 import RxSwift
 import Alamofire
 
-class DefaultNetworkDataSource {
+public class DefaultNetworkDataSource {
     
-    func request<Response: Decodable>(_ urlRequest: URLRequest) -> Single<Response> {
+    public init() { }
+    
+    public func request<Response: Decodable>(_ urlRequest: URLRequest) -> Single<Response> {
         
         // Alamofire 요청
         return Single.create { single in
