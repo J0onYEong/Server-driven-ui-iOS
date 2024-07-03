@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct PlusTitleSectionVO {
+public struct PlusTitleSectionVO {
     
     public let firstRowImageUrl: RowImage
     public let titleText: TitleText
