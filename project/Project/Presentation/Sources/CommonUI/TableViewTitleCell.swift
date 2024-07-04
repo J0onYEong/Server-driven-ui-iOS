@@ -24,7 +24,10 @@ open class TableViewTitleCell : UITableViewCell {
     }
 
     public func bind(titleSectionVO : TitleSectionVO) {
-
+        titleLabel.text = titleSectionVO.titleText
+        badgeImage.load(url : titleSectionVO.badges[0].badgeImageUrl)
+        badgeLabel.text = titleSectionVO.badges[0].text
+        descriptionLabel.text = titleSectionVO.description
     }
 
     func initAttribute() {

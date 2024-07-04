@@ -28,8 +28,20 @@ open class TableViewPlusTitleCell : UITableViewCell {
     }
 
     public func bind(plusTitleSectionVO : PlusTitleSectionVO) {
-
-    }
+        firstRowImage.load(url: plusTitleSectionVO.firstRowImageUrl.imageUrl)
+        firstRowImage.heightAnchor.constraint(equalToConstant: plusTitleSectionVO.firstRowImageUrl.height).isActive = true
+        firstRowImage.widthAnchor.constraint(equalToConstant: plusTitleSectionVO.firstRowImageUrl.width).isActive = true
+        
+        titleTextLabel.text = plusTitleSectionVO.titleText.text
+        titleTextLabel.font = UIFont.systemFont(ofSize: plusTitleSectionVO.titleText.textSize)
+        titleTextLabel.textColor = UIColor(hex: plusTitleSectionVO.titleText.textColor)
+        
+        starBadgeImage.load(url: plusTitleSectionVO.badges[0].badgeImageUrl)
+        starBadgeLabel.text = plusTitleSectionVO.badges[0].text
+        
+        medalImage.load(url: plusTitleSectionVO.badges[1].badgeImageUrl)
+        medalLable.text = plusTitleSectionVO.badges[1].text
+}
 
     func initAttribute() {
         superView.translatesAutoresizingMaskIntoConstraints = false
@@ -40,6 +52,20 @@ open class TableViewPlusTitleCell : UITableViewCell {
         medalImage.translatesAutoresizingMaskIntoConstraints = false
         medalLable.translatesAutoresizingMaskIntoConstraints = false
         descriptionLabel.translatesAutoresizingMaskIntoConstraints = false
+        
+        titleTextLabel.numberOfLines = 0
+        titleTextLabel.font = UIFont.boldSystemFont(ofSize: 20)
+        titleTextLabel.textColor = .black
+        
+        starBadgeLabel.font = UIFont.systemFont(ofSize: 13)
+        starBadgeLabel.textColor = .gray
+        
+        medalLable.font = UIFont.systemFont(ofSize: 13)
+        medalLable.textColor = .gray
+
+        descriptionLabel.numberOfLines = 0
+        descriptionLabel.font = UIFont.systemFont(ofSize: 13)
+        descriptionLabel.textColor = .gray
     }
 
     func initUI() {

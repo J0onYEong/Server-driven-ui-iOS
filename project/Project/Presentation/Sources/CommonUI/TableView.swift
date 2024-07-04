@@ -14,7 +14,8 @@ open class TableView : UITableView {
     }
 
     func initAttribute() {
-
+        self.register(TableViewTitleCell.self, forCellReuseIdentifier: TableViewTitleCell.cellID)
+        self.register(TableViewPlusTitleCell.self, forCellReuseIdentifier: TableViewPlusTitleCell.cellID)
     }
 
     required public init?(coder: NSCoder) {
