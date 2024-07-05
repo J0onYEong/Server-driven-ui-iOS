@@ -10,7 +10,7 @@ import Domain
 import RxSwift
 import UIKit
 
-class ServerDrivenVC : UIViewController {
+public class ServerDrivenVC : UIViewController {
     private var disposebag = DisposeBag()
     private var viewModel : ServerDrivenProtocol!
     private var screenVO : ScreenVO!
@@ -18,6 +18,10 @@ class ServerDrivenVC : UIViewController {
     
     public init() {
         super.init(nibName: nil, bundle: nil)
+    }
+    
+    public override func viewDidLoad() {
+        super.viewDidLoad()
         setupHierarchy()
         setupLayout()
         setupDelegate()
@@ -53,6 +57,9 @@ class ServerDrivenVC : UIViewController {
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
+        
+        tableView.estimatedRowHeight = 300
+        tableView.rowHeight = UITableView.automaticDimension
     }
     
     public func setupDelegate() {
@@ -68,11 +75,12 @@ class ServerDrivenVC : UIViewController {
 }
 
 extension ServerDrivenVC : UITableViewDelegate, UITableViewDataSource {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    
+    public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return contents.count
     }
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let component = contents[indexPath.row]
         switch component.type {
         case .title :

@@ -10,20 +10,37 @@ import Domain
 import UIKit
 
 open class TableViewPlusTitleCell : UITableViewCell {
-    public static let cellID = "TableViewTitleCell"
+    public static let cellID = "TableViewPlusTitleCell"
     let superView = UIView()
     let firstRowImage = UIImageView()
     let titleTextLabel = UILabel()
-    let starBadgeImage = UIImageView()
-    let starBadgeLabel = UILabel()
-    let medalImage = UIImageView()
-    let medalLable = UILabel()
     let descriptionLabel = UILabel()
+    
+    let mainStack: UIStackView = {
+        
+        let view = UIStackView()
+        
+        view.axis = .vertical
+        view.alignment = .leading
+        
+        return view
+    }()
+    
+    let badgeStack: UIStackView = {
+        
+        let view = UIStackView()
+        
+        view.axis = .horizontal
+        view.distribution = .equalSpacing
+        view.alignment = .fill
+        view.spacing = 4
+        
+        return view
+    }()
 
     public override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         initAttribute()
-        initUI()
         setLayout()
     }
 
@@ -32,98 +49,66 @@ open class TableViewPlusTitleCell : UITableViewCell {
         firstRowImage.heightAnchor.constraint(equalToConstant: plusTitleSectionVO.firstRowImageUrl.height).isActive = true
         firstRowImage.widthAnchor.constraint(equalToConstant: plusTitleSectionVO.firstRowImageUrl.width).isActive = true
         
+        // badge
+        plusTitleSectionVO.badges.forEach { badge in
+            
+            let badgeView = PlusTitlBadgeView(vo: badge)
+            badgeView.translatesAutoresizingMaskIntoConstraints = false
+            
+            badgeStack.addArrangedSubview(badgeView)
+        }
+        
         titleTextLabel.text = plusTitleSectionVO.titleText.text
-        titleTextLabel.font = UIFont.systemFont(ofSize: plusTitleSectionVO.titleText.textSize)
+        let textSize = plusTitleSectionVO.titleText.textSize
+        
+        switch plusTitleSectionVO.titleText.textStyle {
+        case .bold:
+            titleTextLabel.font = .boldSystemFont(ofSize: textSize)
+        case .italic:
+            titleTextLabel.font = .italicSystemFont(ofSize: textSize)
+        case .strike:
+            titleTextLabel.attributedText = titleTextLabel.text?.strikeThrough()
+        }
+        
         titleTextLabel.textColor = UIColor(hex: plusTitleSectionVO.titleText.textColor)
         
-        starBadgeImage.load(url: plusTitleSectionVO.badges[0].badgeImageUrl)
-        starBadgeLabel.text = plusTitleSectionVO.badges[0].text
-        
-        medalImage.load(url: plusTitleSectionVO.badges[1].badgeImageUrl)
-        medalLable.text = plusTitleSectionVO.badges[1].text
-}
+    
+        descriptionLabel.text = plusTitleSectionVO.description
+    }
 
     func initAttribute() {
-        superView.translatesAutoresizingMaskIntoConstraints = false
-        firstRowImage.translatesAutoresizingMaskIntoConstraints = false
-        titleTextLabel.translatesAutoresizingMaskIntoConstraints = false
-        starBadgeImage.translatesAutoresizingMaskIntoConstraints = false
-        starBadgeLabel.translatesAutoresizingMaskIntoConstraints = false
-        medalImage.translatesAutoresizingMaskIntoConstraints = false
-        medalLable.translatesAutoresizingMaskIntoConstraints = false
-        descriptionLabel.translatesAutoresizingMaskIntoConstraints = false
+        
+        mainStack.translatesAutoresizingMaskIntoConstraints = false
+        contentView.addSubview(mainStack)
+        
+        [
+            firstRowImage,
+            titleTextLabel,
+            badgeStack,
+            descriptionLabel,
+        ].forEach {
+            
+            $0.translatesAutoresizingMaskIntoConstraints = false
+            mainStack.addArrangedSubview($0)
+        }
         
         titleTextLabel.numberOfLines = 0
         titleTextLabel.font = UIFont.boldSystemFont(ofSize: 20)
         titleTextLabel.textColor = .black
         
-        starBadgeLabel.font = UIFont.systemFont(ofSize: 13)
-        starBadgeLabel.textColor = .gray
-        
-        medalLable.font = UIFont.systemFont(ofSize: 13)
-        medalLable.textColor = .gray
-
         descriptionLabel.numberOfLines = 0
         descriptionLabel.font = UIFont.systemFont(ofSize: 13)
         descriptionLabel.textColor = .gray
     }
 
-    func initUI() {
-        contentView.addSubview(superView)
-        superView.addSubview(firstRowImage)
-        superView.addSubview(titleTextLabel)
-        superView.addSubview(starBadgeImage)
-        superView.addSubview(starBadgeLabel)
-        superView.addSubview(medalImage)
-        superView.addSubview(medalLable)
-        superView.addSubview(descriptionLabel)
-    }
-
     func setLayout() {
+        
+        // mainStack
         NSLayoutConstraint.activate([
-            superView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 0),
-            superView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: 0),
-            superView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 0),
-            superView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: 0)
-        ])
-
-        NSLayoutConstraint.activate([
-            firstRowImage.topAnchor.constraint(equalTo: superView.topAnchor, constant: 10),
-            firstRowImage.leadingAnchor.constraint(equalTo: superView.leadingAnchor, constant: 5),
-        ])
-
-        NSLayoutConstraint.activate([
-            titleTextLabel.topAnchor.constraint(equalTo: firstRowImage.bottomAnchor, constant: 10),
-            titleTextLabel.leadingAnchor.constraint(equalTo: firstRowImage.leadingAnchor),
-            titleTextLabel.trailingAnchor.constraint(equalTo: superView.trailingAnchor, constant: 5)
-        ])
-
-        NSLayoutConstraint.activate([
-            starBadgeImage.topAnchor.constraint(equalTo: titleTextLabel.bottomAnchor, constant: 5),
-            starBadgeImage.leadingAnchor.constraint(equalTo: firstRowImage.leadingAnchor)
-        ])
-
-        NSLayoutConstraint.activate([
-            starBadgeLabel.topAnchor.constraint(equalTo: starBadgeImage.topAnchor),
-            starBadgeLabel.leadingAnchor.constraint(equalTo: starBadgeImage.trailingAnchor, constant: 3),
-            starBadgeImage.heightAnchor.constraint(equalToConstant: 5)
-        ])
-
-        NSLayoutConstraint.activate([
-            medalImage.topAnchor.constraint(equalTo: starBadgeImage.topAnchor),
-            medalImage.leadingAnchor.constraint(equalTo: starBadgeLabel.trailingAnchor, constant: 5),
-            medalImage.heightAnchor.constraint(equalToConstant: 5)
-        ])
-
-        NSLayoutConstraint.activate([
-            medalLable.topAnchor.constraint(equalTo: medalImage.topAnchor),
-            medalLable.leadingAnchor.constraint(equalTo: medalImage.trailingAnchor, constant: 3)
-        ])
-
-        NSLayoutConstraint.activate([
-            descriptionLabel.topAnchor.constraint(equalTo: starBadgeImage.bottomAnchor, constant: 3),
-            descriptionLabel.leadingAnchor.constraint(equalTo: firstRowImage.leadingAnchor),
-            descriptionLabel.bottomAnchor.constraint(equalTo: superView.bottomAnchor, constant: 10)
+            mainStack.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 0),
+            mainStack.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: 0),
+            mainStack.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 0),
+            mainStack.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: 0)
         ])
     }
 
@@ -131,3 +116,13 @@ open class TableViewPlusTitleCell : UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 }
+
+extension String {
+    
+    func strikeThrough() -> NSAttributedString {
+        let attributeString: NSMutableAttributedString = NSMutableAttributedString(string: self)
+        attributeString.addAttribute(NSAttributedString.Key.strikethroughStyle, value: NSUnderlineStyle.single.rawValue, range: NSMakeRange(0, attributeString.length))
+        return attributeString
+    }
+}
+

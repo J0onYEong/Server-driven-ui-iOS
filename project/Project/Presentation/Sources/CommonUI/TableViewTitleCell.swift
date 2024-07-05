@@ -10,82 +10,78 @@ import Domain
 
 open class TableViewTitleCell : UITableViewCell {
     public static let cellID = "TableViewTitleCell"
-    let superView = UIView()
     let titleLabel = UILabel()
-    let badgeImage = UIImageView()
-    let badgeLabel = UILabel()
     let descriptionLabel = UILabel()
+    
+    let mainStack: UIStackView = {
+        
+        let view = UIStackView()
+        
+        view.axis = .vertical
+        view.alignment = .leading
+        
+        return view
+    }()
+    
+    let badgeStack: UIStackView = {
+        
+        let view = UIStackView()
+        
+        view.axis = .horizontal
+        view.distribution = .equalSpacing
+        view.alignment = .fill
+        view.spacing = 4
+        
+        return view
+    }()
 
     public override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         initAttribute()
-        initUI()
         setLayout()
     }
 
     public func bind(titleSectionVO : TitleSectionVO) {
         titleLabel.text = titleSectionVO.titleText
-        badgeImage.load(url : titleSectionVO.badges[0].badgeImageUrl)
-        badgeLabel.text = titleSectionVO.badges[0].text
         descriptionLabel.text = titleSectionVO.description
+        
+        titleSectionVO.badges.forEach { badge in
+            let badgeView = TitlBadgeView(vo: badge)
+            badgeView.translatesAutoresizingMaskIntoConstraints = false
+            
+            badgeStack.addArrangedSubview(badgeView)
+        }
     }
 
     func initAttribute() {
-        superView.translatesAutoresizingMaskIntoConstraints = false
-        titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        badgeImage.translatesAutoresizingMaskIntoConstraints = false
-        badgeLabel.translatesAutoresizingMaskIntoConstraints = false
-        descriptionLabel.translatesAutoresizingMaskIntoConstraints = false
-
+        
+        mainStack.translatesAutoresizingMaskIntoConstraints = false
+        contentView.addSubview(mainStack)
+        
+        [
+            titleLabel,
+            badgeStack,
+            descriptionLabel,
+        ].forEach {
+            $0.translatesAutoresizingMaskIntoConstraints = false
+            mainStack.addArrangedSubview($0)
+        }
+        
         titleLabel.numberOfLines = 0
         titleLabel.font = UIFont.boldSystemFont(ofSize: 20)
         titleLabel.textColor = .black
-
-        badgeLabel.font = UIFont.systemFont(ofSize: 13)
-        badgeLabel.textColor = .gray
 
         descriptionLabel.numberOfLines = 0
         descriptionLabel.font = UIFont.systemFont(ofSize: 13)
         descriptionLabel.textColor = .gray
     }
 
-    func initUI() {
-        contentView.addSubview(superView)
-        superView.addSubview(titleLabel)
-        superView.addSubview(badgeImage)
-        superView.addSubview(badgeLabel)
-        superView.addSubview(descriptionLabel)
-    }
-
     func setLayout() {
         NSLayoutConstraint.activate([
-            superView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 0),
-            superView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: 0),
-            superView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 0),
-            superView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: 0)
-        ])
-
-        NSLayoutConstraint.activate([
-            titleLabel.topAnchor.constraint(equalTo: superView.topAnchor, constant: 10),
-            titleLabel.leadingAnchor.constraint(equalTo: superView.leadingAnchor, constant: 5),
-            titleLabel.trailingAnchor.constraint(equalTo: superView.trailingAnchor, constant: 5)
-        ])
-
-        NSLayoutConstraint.activate([
-            badgeImage.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 5),
-            badgeImage.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor),
-            badgeImage.heightAnchor.constraint(equalToConstant: 5)
-        ])
-
-        NSLayoutConstraint.activate([
-            badgeLabel.leadingAnchor.constraint(equalTo: badgeImage.trailingAnchor, constant: 3),
-            badgeLabel.topAnchor.constraint(equalTo: badgeImage.topAnchor)
-        ])
-
-        NSLayoutConstraint.activate([
-            descriptionLabel.topAnchor.constraint(equalTo: badgeImage.bottomAnchor, constant: 3),
-            descriptionLabel.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor),
-            descriptionLabel.bottomAnchor.constraint(equalTo: superView.bottomAnchor, constant: 10)
+            mainStack.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 0),
+            mainStack.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: 0),
+            mainStack.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 0),
+            mainStack.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: 0)
         ])
     }
 

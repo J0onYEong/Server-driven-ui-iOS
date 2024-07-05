@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Presentation
 import Data
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
@@ -18,7 +19,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         let viewController = ServerDrivenVC()
         let datasource = DefaultNetworkDataSource()
-        let repository = DefaultScreenUIRepository()
+        let repository = DefaultScreenUIRepository(dataSoruce: datasource)
         let viewModel = ServerDrivenViewModel(screenUIRespository: repository)
         viewController.bind(viewModel: viewModel)
         window = UIWindow(windowScene: windowScene)

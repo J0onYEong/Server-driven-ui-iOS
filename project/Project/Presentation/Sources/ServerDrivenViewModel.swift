@@ -11,19 +11,19 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-protocol ServerDrivenInputProtocol {
+public protocol ServerDrivenInputProtocol {
     var viewDidLoad : PublishSubject<Void> { get }
 }
 
-protocol ServerDrivenOutputProtocol {
+public protocol ServerDrivenOutputProtocol {
     var cellInformation : Signal<ScreenVO> { get }
 }
 
-protocol ServerDrivenProtocol : ServerDrivenInputProtocol, ServerDrivenOutputProtocol {
+public protocol ServerDrivenProtocol : ServerDrivenInputProtocol, ServerDrivenOutputProtocol {
     
 }
 
-class ServerDrivenViewModel : ServerDrivenProtocol {
+public class ServerDrivenViewModel : ServerDrivenProtocol {
     let screenUIRepository : ScreenUIRepository
     
     public init(screenUIRespository : ScreenUIRepository){
