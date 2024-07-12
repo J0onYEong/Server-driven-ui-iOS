@@ -33,9 +33,9 @@ public struct IconContentVO: ViewTypeContentable {
 public struct RichTextContentVO: ViewTypeContentable {
     
     public let type: ViewTypeContentType = .richText
-    public let content: [RichTextType]
+    public let content: [RichTextable]
     
-    public init(content: [RichTextType]) {
+    public init(content: [RichTextable]) {
         self.content = content
     }
 }
