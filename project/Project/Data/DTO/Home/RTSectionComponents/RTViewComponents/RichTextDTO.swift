@@ -20,12 +20,14 @@ protocol RichTextDTO : Decodable, EntityRepresentable {
 struct TextDTO : RichTextDTO {
     var type: RichTextType = .text
     let text : String?
+    let textColor : String?
     let fontSize : Int?
     let background : String?
     let textStyle : [String]?
     
     enum DecodingKeys : String, CodingKey {
         case text
+        case textColor
         case fontSize
         case background
         case textStyle
@@ -34,6 +36,7 @@ struct TextDTO : RichTextDTO {
     init(from decoder: any Decoder) throws {
         let container = try decoder.container(keyedBy: DecodingKeys.self)
         self.text = try container.decodeIfPresent(String.self, forKey: .text)
+        self.textColor = try container.decodeIfPresent(String.self, forKey: .textColor)
         self.fontSize = try container.decodeIfPresent(Int.self, forKey: .fontSize)
         self.background = try container.decodeIfPresent(String.self, forKey: .background)
         self.textStyle = try container.decodeIfPresent([String].self, forKey: .textStyle)
@@ -62,7 +65,13 @@ struct ImageDTO : RichTextDTO {
 
 extension TextDTO : EntityRepresentable {
     func toEntity() -> RichTextable {
-        return RichTextContentVO.RTTextVO(text: text ?? "", fontSize: CGFloat(fontSize ?? 17), background: background ?? "black", textStyle: textStyle ?? [])
+        return RichTextContentVO.RTTextVO(
+            text: text ?? "",
+            textColor: textColor ?? "black",
+            fontSize: CGFloat(fontSize ?? 17),
+            background: background ?? "clear",
+            textStyle: textStyle ?? []
+        )
     }
 }
 
@@ -103,6 +112,6 @@ extension RichTextDTOWrapper : EntityRepresentable {
             return image.toEntity()
         }
         
-        return RichTextContentVO.RTTextVO(text: "", fontSize: 17, background: "black", textStyle: [])
+        return RichTextContentVO.RTTextVO(text: "", textColor: "", fontSize: 17, background: "black", textStyle: [])
     }
 }

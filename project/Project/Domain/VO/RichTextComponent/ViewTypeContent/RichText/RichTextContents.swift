@@ -14,12 +14,14 @@ public extension RichTextContentVO {
         public let type: RichTextType = .text
         
         public let text: String
+        public let textColor: String
         public let fontSize: CGFloat
         public let background: String
         public let textStyle: [String]
         
-        public init(text: String, fontSize: CGFloat, background: String, textStyle: [String] = []) {
+        public init(text: String, textColor: String, fontSize: CGFloat, background: String, textStyle: [String]) {
             self.text = text
+            self.textColor = textColor
             self.fontSize = fontSize
             self.background = background
             self.textStyle = textStyle

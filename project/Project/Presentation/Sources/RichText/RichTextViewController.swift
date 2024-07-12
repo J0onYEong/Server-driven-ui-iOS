@@ -173,15 +173,38 @@ extension RichTextable {
     
     func toString() -> NSAttributedString {
         
+        func textToColor(colorStr: String) -> UIColor {
+            
+            switch colorStr {
+            case "clear":
+                return .clear
+            case "yellow":
+                return .yellow
+            case "red":
+                return .red
+            case "black":
+                return .black
+            default:
+                return .clear
+            }
+        }
+        
         switch type {
         case .text:
             guard let vo = self as? RichTextContentVO.RTTextVO else { return .init() }
             var attributes: [NSAttributedString.Key: Any] = [:]
             
             let text = vo.text
-//            let textColor = ""
             let fontSize = vo.fontSize
             attributes[.font] = UIFont.systemFont(ofSize: fontSize)
+            
+            let textColor = textToColor(colorStr: vo.textColor)
+            
+            attributes[.foregroundColor] = textColor
+            
+            let backgroundColor = textToColor(colorStr: vo.background)
+            
+            attributes[.backgroundColor] = backgroundColor
             
             vo.textStyle.forEach { style in
                 switch style {
