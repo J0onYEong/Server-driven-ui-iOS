@@ -10,7 +10,7 @@ import Domain
 
 struct RichViewDTO : Decodable {
     let title : String?
-    let richText : [ RichTextDTOWrapper]?
+    let richText : [RichTextDTOWrapper]?
     
     enum DecodingKeys : String, CodingKey {
         case title
@@ -25,9 +25,15 @@ struct RichViewDTO : Decodable {
 }
 
 extension RichViewDTO : EntityRepresentable {
-    func toEntity() -> RichTextContentVO {
+    func toEntity() -> ViewContentVO {
         let contents = richText?.map { $0.toEntity() } ?? []
-        return RichTextContentVO(content: contents)
+        return ViewContentVO(
+            viewType: "RichViewType",
+            content: [
+                TitleContentVO(content: title ?? ""),
+                RichTextContentVO(content: contents)
+            ]
+        )
     }
 }
 

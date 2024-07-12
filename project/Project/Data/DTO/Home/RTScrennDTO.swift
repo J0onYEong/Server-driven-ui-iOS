@@ -46,6 +46,7 @@ struct RTScrennDTO : Decodable {
 
 extension RTScrennDTO : EntityRepresentable {
     func toEntity() -> RTScreenVO {
+        
         let contents = contents.map {
             switch $0 {
             case .AViewType(let dto) :
@@ -53,7 +54,7 @@ extension RTScrennDTO : EntityRepresentable {
             case .BViewType(let dto) :
                 return dto.toEntity()
             case .RichViewType(let dto) :
-                return dto.toEntity
+                return dto.toEntity()
             }
         }.compactMap { $0 as? ViewContentVO }
         

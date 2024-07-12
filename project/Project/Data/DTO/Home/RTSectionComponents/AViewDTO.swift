@@ -14,8 +14,14 @@ struct AViewDTO : Decodable {
 }
 
 extension AViewDTO : EntityRepresentable {
-    func toEntity() -> ViewTypeContentable {
+    func toEntity() -> ViewContentVO {
         let imageUrl = URL(string: iconUrl ?? "")!
-        return IconContentVO(imageUrl: imageUrl)
+        return ViewContentVO(
+            viewType: "AViewType",
+            content: [
+                TitleContentVO(content: title ?? ""),
+                IconContentVO(imageUrl: imageUrl)
+            ]
+        )
     }
 }

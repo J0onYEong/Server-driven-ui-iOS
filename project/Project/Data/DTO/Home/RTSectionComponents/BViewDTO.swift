@@ -13,7 +13,12 @@ struct BViewDTO : Decodable {
 }
 
 extension BViewDTO : EntityRepresentable {
-    func toEntity() -> ViewTypeContentable {
-        return TitleContentVO(content: title ?? "")
+    func toEntity() -> ViewContentVO {
+        return ViewContentVO(
+            viewType: "BViewType",
+            content: [
+                TitleContentVO(content: title ?? "")
+            ]
+        )
     }
 }
