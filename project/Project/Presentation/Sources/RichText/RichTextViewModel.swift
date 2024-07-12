@@ -7,20 +7,37 @@
 
 import Foundation
 import Domain
+import Data
 import RxSwift
 import RxCocoa
 
 public class RichTextViewModel {
-
     
-    let voPublisher: BehaviorSubject<RTScreenVO> = .init(value: .mockData)
+    let repository: RTScreenUIRepository
     
-    public init() {
-        
+    let voPublisher: PublishRelay<RTScreenVO> = .init()
+    
+    let disposeBag = DisposeBag()
+    
+    public init(repository: RTScreenUIRepository) {
+        self.repository = repository
     }
     
-    func setObservable() {
+    func getData() {
         
+        repository
+            .getHomeRTScreenUI()
+            .subscribe(
+                onSuccess: { [weak self] vo in
+                    
+                    self?.voPublisher.accept(vo)
+                },
+                onFailure: { error in
+                    print(error)
+                }
+            )
+            .disposed(by: disposeBag)
+            
     }
     
 }

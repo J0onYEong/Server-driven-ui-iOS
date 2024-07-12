@@ -23,8 +23,6 @@ public class RichTextViewController: UIViewController {
     
     private let disposeBag = DisposeBag()
     
-    private let onViewDidLoad = PublishSubject<Void>()
-    
     public init(viewModel: RichTextViewModel) {
         self.viewModel = viewModel
         
@@ -39,8 +37,8 @@ public class RichTextViewController: UIViewController {
     public override func viewDidLoad() {
         super.viewDidLoad()
         
-        onViewDidLoad.onNext(())
-
+        viewModel.getData()
+        
         view.backgroundColor = .white
     }
     

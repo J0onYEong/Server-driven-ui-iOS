@@ -24,7 +24,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         viewController.bind(viewModel: viewModel)
         window = UIWindow(windowScene: windowScene)
         
-        let richTextViewModel = RichTextViewModel()
+        let richTextViewModel = RichTextViewModel(
+            repository: DefaultRTScreenRespository()
+        )
         
         let vc = RichTextViewController(
             viewModel: richTextViewModel
