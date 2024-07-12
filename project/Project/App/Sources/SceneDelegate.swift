@@ -24,7 +24,13 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         viewController.bind(viewModel: viewModel)
         window = UIWindow(windowScene: windowScene)
         
-        window?.rootViewController = viewController
+        let richTextViewModel = RichTextViewModel()
+        
+        let vc = RichTextViewController(
+            viewModel: richTextViewModel
+        )
+        
+        window?.rootViewController = vc
         window?.makeKeyAndVisible()
     }
 
