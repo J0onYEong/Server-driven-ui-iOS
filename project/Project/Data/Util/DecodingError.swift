@@ -11,4 +11,5 @@ enum DecodingError: Error {
     
     case unknownScreenType
     case unknownSectionComponent
+    case unknownViewType
 }
